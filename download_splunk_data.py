@@ -2,37 +2,51 @@ import os
 import urllib.request
 
 # ─────────────────────────────────────────────────────────────────────────────
-# This script downloads real attack log files from Splunk's Attack Data repo
-# Each file contains Windows Security Event logs from a real attack simulation
-# Each file corresponds to one MITRE ATT&CK technique
+# Download attack logs for ALL 8 MITRE ATT&CK techniques from Splunk Attack Data
+# Source: https://github.com/splunk/attack_data
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Create folders
-os.makedirs("data/raw/T1110_BruteForce", exist_ok=True)
-os.makedirs("data/raw/T1059_CommandShell", exist_ok=True)
-os.makedirs("data/raw/T1078_ValidAccounts", exist_ok=True)
-os.makedirs("data/raw/T1055_ProcessInjection", exist_ok=True)
-os.makedirs("data/raw/T1082_SystemInfo", exist_ok=True)
-os.makedirs("data/raw/T1021_RemoteServices", exist_ok=True)
-os.makedirs("data/processed", exist_ok=True)
-os.makedirs("models", exist_ok=True)
-os.makedirs("results", exist_ok=True)
-os.makedirs("notebooks", exist_ok=True)
+folders = [
+    "data/raw/T1566_Phishing",
+    "data/raw/T1110_BruteForce", 
+    "data/raw/T1078_ValidAccounts",
+    "data/raw/T1059_CommandShell",
+    "data/raw/T1055_ProcessInjection",
+    "data/raw/T1082_SystemInfo",
+    "data/raw/T1021_RemoteServices",
+    "data/raw/T1041_Exfiltration",
+    "data/processed",
+    "models",
+    "results",
+    "results/figures",
+    "notebooks"
+]
+
+for folder in folders:
+    os.makedirs(folder, exist_ok=True)
 
 print("Created all folders")
 print()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# DOWNLOAD FILES
-# These are direct links to log files in the Splunk Attack Data GitHub repo
-# Each file contains real Windows Security Event logs from an attack simulation
-# ─────────────────────────────────────────────────────────────────────────────
+# NOTE: These URLs point to the Splunk Attack Data repository.
+# If a URL is broken, replace it with a working one from:
+# https://github.com/splunk/attack_data/tree/master/datasets/attack_techniques
 
 files_to_download = [
+    {
+        "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1566.001/spearphishing_attachment/windows-sysmon.log",
+        "save_to": "data/raw/T1566_Phishing/windows-sysmon.log",
+        "technique": "T1566 - Phishing"
+    },
     {
         "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1110.003/purplesharp_disabled_users_kerberos/windows-security.log",
         "save_to": "data/raw/T1110_BruteForce/windows-security.log",
         "technique": "T1110 - Brute Force"
+    },
+    {
+        "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1078.001/local_admin/windows-security.log",
+        "save_to": "data/raw/T1078_ValidAccounts/windows-security.log",
+        "technique": "T1078 - Valid Accounts"
     },
     {
         "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1059.001/encoded_powershell/windows-powershell.log",
@@ -45,9 +59,19 @@ files_to_download = [
         "technique": "T1055 - Process Injection"
     },
     {
+        "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1082/atomic_red_team/windows-sysmon.log",
+        "save_to": "data/raw/T1082_SystemInfo/windows-sysmon.log",
+        "technique": "T1082 - System Information Discovery"
+    },
+    {
         "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1021.002/atomic_red_team/windows-security.log",
         "save_to": "data/raw/T1021_RemoteServices/windows-security.log",
         "technique": "T1021 - Remote Services"
+    },
+    {
+        "url": "https://media.githubusercontent.com/media/splunk/attack_data/master/datasets/attack_techniques/T1041/icedid_exfiltration/zeek.log",
+        "save_to": "data/raw/T1041_Exfiltration/zeek.log",
+        "technique": "T1041 - Exfiltration Over C2"
     },
 ]
 
@@ -62,9 +86,8 @@ for item in files_to_download:
         print()
     except Exception as e:
         print(f"  ERROR: {e}")
+        print(f"  >>> Go to https://github.com/splunk/attack_data and find a replacement URL for {item['technique']}")
         print()
 
 print("Download complete!")
-print()
-print("Your data/raw/ folder now contains log files for each ATT&CK technique.")
-print("Next step: Run the notebook to parse and explore this data.")
+print("Next: Run 02_preprocessing.ipynb to parse all 8 techniques.")
