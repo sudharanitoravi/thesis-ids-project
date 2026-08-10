@@ -6,7 +6,7 @@
 data/raw/
 data/processed/*.csv
 
-# Model binaries (too large)
+# Model binaries
 *.pkl
 *.joblib
 *.h5
