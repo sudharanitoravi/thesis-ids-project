@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Large data files
+data/raw/
+data/processed/*.csv
+
+# Model binaries (too large)
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Environment
+venv/
+.env
+
+# OS
+Thumbs.db
