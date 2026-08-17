@@ -65,14 +65,7 @@ Raw Logs → Feature Extraction → Preprocessing → 5 Models + CV → SHAP Exp
 └── README.md
 ```
 
-## Quick Start
 
-```bash
-pip install -r requirements.txt
-python download_splunk_data.py
-```
-
-Then run notebooks in order: `01` → `02` → `03` → `04` → `05` → `06`
 
 ## Key References
 
